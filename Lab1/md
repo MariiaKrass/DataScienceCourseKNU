@@ -1,0 +1,11 @@
+Створити змінні базових (atomic) типів. Базові типи: character, numeric, integer, complex, logical.
+```R
+>x<-c("a","b","c","d","f")
+>##character
+>x<-c(0.35,0,146,0.578)
+>##numberic 
+>x<-16:68
+>##integer
+>x<-c(TRUE,FALSE)
+>##logical
+```
