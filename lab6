@@ -1,0 +1,46 @@
+#1. —творити матрицю mat з 5 стовпц¤ми та 10 строками за допомогою
+#matrix з випадковими даними (функц≥¤ rnorm(50)).
+mat <- matrix(rnorm(50), nrow = 10, ncol = 5)
+
+#2. «найти максимальне значенн¤ в кожному стовпц≥.
+apply(mat, 2, max)
+
+#3. «найти середнЇ (mean) значенн¤ кожного стовпц¤.
+apply(mat, 2, mean)
+
+#4. «найти м≥н≥мальне значенн¤ в кожному р¤дку.
+apply(mat, 1, min)
+
+#5. ¬≥дсортувати кожен стовбець таблиц≥.
+apply(mat, 2, sort)
+
+#6. «найти к≥льк≥сть значень < 0 дл¤ кожного стовпц¤. ¬икористати свою функц≥ю.
+apply(mat, 2, function(x) length(x[x < 0]))
+
+#7. ¬вивести вектор з булевими значенн¤ми TRUE та FALSE. TRUE, ¤кщо в
+#стовпц≥ Ї елементи >2, FALSE Ц ¤кщо немаЇ.
+
+apply(mat, 2, function(x) if (length(x[x>2]) > 0) TRUE else FALSE)
+
+#8. —творить список 
+#list1 <- list(observationA = c(1:5, 7:3), observationB = matrix(1:6, nrow=2)). 
+#ƒл¤ цього списку знайд≥ть sum за допомогою lapply.
+list1 <- list(observationA = c(1:5, 7:3), observationB = matrix(1:6, nrow=2))
+lapply(list1, sum)
+
+#9. ƒл¤ кожного елементу списку list1 знайд≥ть максимальне та м≥н≥мальне
+#значенн¤ (range) за допомогою lapply та sapply.
+lapply(list1, min)
+lapply(list1, max)
+sapply(list1, min)
+sapply(list1, max)
+
+#10.ƒл¤ вбудованого набору даних InsectSprays знайти середнЇ count дл¤ кожного spray.
+tapply(InsectSprays$count, InsectSprays$spray, mean)
+
+#або використовуючи split
+splitmean <- function(df) {
+  s <- split( df, df$spray)
+  sapply( s, function(x) mean(x$count) )
+}
+splitmean(InsectSprays)
