@@ -1,0 +1,106 @@
+#1
+#Чи зменшилися загальні викиди PM2.5 у США з 1999 по 2008 рік? 
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+
+em = aggregate(Emissions ~ year, NEI, sum)
+plot(em[,"year"], em[,"Emissions"], type = "l", 
+     xlab = "year", ylab = "Emissions", main = "Total emissions by year")
+#2
+#Чи зменшилися загальні викиди PM2.5 у місті Балтімор, 
+#штат Меріленд(fips == "24510") з 1999 по 2008 рік?
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+
+df = NEI[NEI[,"fips"] == "24510",]
+em = aggregate(Emissions ~ year, df, sum)
+plot(em[,"year"], em[,"Emissions"], type = "l", 
+     xlab = "year", ylab = "Emissions", main = "Total emissions by year (24510)")
+ #3
+ #З чотирьох типів джерел, позначених змінною type (point, non-point, onroad, or non-road),
+#для якого з цих чотирьох джерел спостерігалосьзменшення викидів у 1999–2008 роках 
+#для міста Балтімор? Для яких спостерігалося збільшення викидів у 1999–2008 роках? 
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+
+install.packages("ggplot2")
+install.packages("ggpubr")
+
+library(ggplot2)
+library(ggpubr)
+
+df = NEI[NEI[,"fips"] == "24510",]
+em = aggregate(Emissions ~ year + type, df, sum)
+
+em_new = em[em[,"type"] == "NON-ROAD",]
+p1 = ggplot(em_new, aes(year, Emissions)) + 
+  geom_line(data = em_new, aes(year, Emissions))
+
+em_new = em[em[,"type"] == "NONPOINT",]
+p2 = ggplot(em_new, aes(year, Emissions)) + 
+  geom_line(data = em_new, aes(year, Emissions))
+
+em_new = em[em[,"type"] == "ON-ROAD",]
+p3 = ggplot(em_new, aes(year, Emissions)) + 
+  geom_line(data = em_new, aes(year, Emissions))
+
+em_new = em[em[,"type"] == "POINT",]
+p4 = ggplot(em_new, aes(year, Emissions)) + 
+  geom_line(data = em_new, aes(year, Emissions))
+
+ggarrange(p1,p2,p3,p4, ncol = 2, nrow = 2,
+          labels = c("NON-ROAD", "NOPOINT", "ON-ROAD", "POINT"))
+#4
+#Як змінилися викиди від джерел спалювання вугілля (coal combustionrelated sources)
+#в США у 1999–2008 роках у США?
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+
+library(data.table)
+
+coal_scc = SCC[grep("coal", tolower(SCC$EI.Sector)), "SCC"]
+df = NEI[NEI[,"SCC"] %in% coal_scc,]
+em = aggregate(Emissions ~ year, df, sum)
+
+plot(em[,"year"], em[,"Emissions"], type = "l", 
+     xlab = "year", ylab = "Emissions", main = "Total emissions by year (coal)")
+#5
+#Як змінилися викиди від автомобільних джерел (motor vehicle sources) 
+#у 1999–2008 роках у місті Балтимор?
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+
+library(data.table)
+
+df = NEI[NEI[,"fips"] == "24510",]
+vehicle_scc = SCC[grep("vehicle", tolower(SCC$EI.Sector)), "SCC"]
+df = df[df[,"SCC"] %in% vehicle_scc,]
+em = aggregate(Emissions ~ year, df, sum)
+
+plot(em[,"year"], em[,"Emissions"], type = "l", 
+     xlab = "year", ylab = "Emissions", main = "Total emissions by year (vehicles, Baltimore)")
+ #6
+ #Порівняйте викиди від автомобільних джерел у місті Балтимор із
+#аналогічними викидами в окрузі Лос-Анджелес, Каліфорнія (fips ==
+#"06037"). У якому місті відбулися значні зміни з часом у викидах від
+#автомобільних джерел?
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+
+library(data.table)
+
+LA = NEI[NEI[,"fips"] == "06037",]
+vehicle_scc = SCC[grep("vehicle", tolower(SCC$EI.Sector)), "SCC"]
+LA = LA[LA[,"SCC"] %in% vehicle_scc,]
+em = aggregate(Emissions ~ year, LA, sum)
+
+plot(em[,"year"], em[,"Emissions"], type = "l", col = "green", ylim = c(0, max(em[,"Emissions"])),
+      xlab = "year", ylab = "Emissions", main = "Total emissions (vehicle) green - Baltimore, black - LA")
+
+balti = NEI[NEI[,"fips"] == "24510",]
+vehicle_scc = SCC[grep("vehicle", tolower(SCC$EI.Sector)), "SCC"]
+balti = balti[balti[,"SCC"] %in% vehicle_scc,]
+em = aggregate(Emissions ~ year, balti, sum)
+
+lines(em[,"year"], em[,"Emissions"], type = "l", 
+     xlab = "year", ylab = "Emissions", main = "Total emissions (vehicle) green - Baltimore, black - LA")
