@@ -1,0 +1,68 @@
+#plot1
+data = read.table("lab6.txt", sep = ";", header = T)
+data[,"Date"] = as.Date(data[,"Date"], format = "%d/%m/%Y")
+data = data[(data[,"Date"] <= as.Date("2007-02-02")) & (data[,"Date"] >= as.Date("2007-02-01")), ]
+
+GAP = data[data[,"Global_active_power"] != "?", "Global_active_power"]
+hist(as.numeric(GAP), xlab = "Global active power (killowatts)", 
+     ylab = "Frequency", col = "Red", main = "Global active power"
+     
+#plot2
+     data = read.table("lab6.txt", sep = ";", header = T)
+data[,"Date"] = as.Date(data[,"Date"], format = "%d/%m/%Y")
+data = data[(data[,"Date"] <= as.Date("2007-02-02")) & (data[,"Date"] >= as.Date("2007-02-01")), ]
+
+colnames(data)[3] ="GAP"
+data$datetime = paste(data$Date, data$Time)  # конкатенація
+data$datetime = as.POSIXct(data$datetime, format = "%Y-%M-%d %H:%M:%S")  # Конвертуємо в формат часу
+data <- data[order(data$datetime),] # Сортуємо по даті
+
+plot(data$datetime, data$GAP, type = "l", xlab = "weekday", ylab = "Global active power")
+
+#plot3
+data = read.table("lab6.txt", sep = ";", header = T)
+data[,"Date"] = as.Date(data[,"Date"], format = "%d/%m/%Y")
+data = data[(data[,"Date"] <= as.Date("2007-02-02")) & (data[,"Date"] >= as.Date("2007-02-01")), ]
+
+colnames(data)[3] ="GAP"
+data$datetime = paste(data$Date, data$Time)  # конкатенація
+data$datetime = as.POSIXct(data$datetime, format = "%Y-%M-%d %H:%M:%S")  # Конвертуємо в формат часу
+data <- data[order(data$datetime),] # Сортуємо по даті
+
+
+plot(data$datetime, data$Sub_metering_1, type = "l", xlab = "datetime", ylab = "Energy sub metering")
+lines(data$datetime, data$Sub_metering_2, type = "l", col = "red",
+      xlab = "weekday", ylab = "Energy sub metering",)
+lines(data$datetime, data$Sub_metering_3, type = "l", col = "blue",
+      xlab = "weekday", ylab = "Energy sub metering")
+legend("topright", legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), 
+       col = c("black", "red", "blue"), lty = 1)
+       
+#plot4
+data = read.table("lab6.txt", sep = ";", header = T)
+data[,"Date"] = as.Date(data[,"Date"], format = "%d/%m/%Y")
+data = data[(data[,"Date"] <= as.Date("2007-02-02")) & (data[,"Date"] >= as.Date("2007-02-01")), ]
+
+colnames(data)[3] ="GAP"
+data$datetime = paste(data$Date, data$Time)  # конкатенація
+data$datetime = as.POSIXct(data$datetime, format = "%Y-%M-%d %H:%M:%S")  # Конвертуємо в формат часу
+data <- data[order(data$datetime),] # Сортуємо по даті
+
+attach(mtcars)
+par(mfrow=c(2,2))
+
+# plot1
+plot(data$datetime, data$GAP, type = "l", xlab = "datetime", ylab = "Global active power")
+# plot2
+plot(data$datetime, data$Voltage, type = "l", xlab = "datetime", ylab = "Voltage")
+# plot3
+plot(data$datetime, data$Sub_metering_1, type = "l", xlab = "datetime", ylab = "Energy sub metering")
+lines(data$datetime, data$Sub_metering_2, type = "l", col = "red",
+      xlab = "weekday", ylab = "Energy sub metering",)
+lines(data$datetime, data$Sub_metering_3, type = "l", col = "blue",
+      xlab = "weekday", ylab = "Energy sub metering")
+legend("topright", legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), 
+       col = c("black", "red", "blue"), lty = 1)
+# plot4
+plot(data$datetime, data$Global_reactive_power, type = "l", 
+     xlab = "datetime", ylab = "Global reactive power")
