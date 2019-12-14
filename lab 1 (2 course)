@@ -1,0 +1,25 @@
+# 1 
+url = "https://data.gov.ua/dataset/e371af0d-d0b1-4834-9833-38a327d47300/resource/c137fcd0-b900-45fc-87bb-df8cb4ab6458/download/richnii-plan-stanom-na-11-12-2019.xls"
+filename = "lab1_1.xls"
+download.file(url = url, destfile = filename, mode = "wb")
+#install.packages("gdata")
+library(gdata)
+data = read.xls(filename)
+print(data[1:6, ])
+
+# 2 
+url = "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv"
+filename = "lab1_2.csv"
+download.file(url = url, destfile = filename)
+data = read.csv(filename, sep= ",")
+property = data[data$VAL == 24, ]$VAL
+property = property[!is.na(property)]
+print(length(property))
+
+# 3
+url = "http://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
+install.packages("XML")
+require(XML)
+data <- xmlParse(url)
+xml_data <- xmlToDataFrame(getNodeSet(data, "//zipcode"))
+print(length(xml_data[xml_data == 21231]))
