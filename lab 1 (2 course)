@@ -1,4 +1,4 @@
-# 1 
+#1 За допомогою download.file() завантажте любий excel файл з порталу http://data.gov.ua та зчитайте його (xls, xlsx – бінарні формати, тому встановить mode = “wb”. Виведіть перші 6 строк отриманого фрейму даних
 url = "https://data.gov.ua/dataset/e371af0d-d0b1-4834-9833-38a327d47300/resource/c137fcd0-b900-45fc-87bb-df8cb4ab6458/download/richnii-plan-stanom-na-11-12-2019.xls"
 filename = "lab1_1.xls"
 download.file(url = url, destfile = filename, mode = "wb")
@@ -7,7 +7,7 @@ library(gdata)
 data = read.xls(filename)
 print(data[1:6, ])
 
-# 2 
+#2 За допомогою download.file() завантажте файл getdata_data_ss06hid.csv за посиланням https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv та завантажте дані в R. Code book, що пояснює значення змінних знаходиться за посиланням.Необхідно знайти, скільки property мають value $1000000+
 url = "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv"
 filename = "lab1_2.csv"
 download.file(url = url, destfile = filename)
@@ -16,7 +16,7 @@ property = data[data$VAL == 24, ]$VAL
 property = property[!is.na(property)]
 print(length(property))
 
-# 3
+#3 Зчитайте xml файл за посиланням. Скільки ресторанів мають zipcode 21231?
 url = "http://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
 install.packages("XML")
 require(XML)
